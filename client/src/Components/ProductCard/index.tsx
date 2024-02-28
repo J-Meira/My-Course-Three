@@ -21,10 +21,9 @@ export const ProductCard = ({
   pictureUrl,
   type,
   brand,
-  quantityInStock,
 }: IProductCardProps) => {
   const destiny = `/product/${id}`;
-  return quantityInStock > 0 ? (
+  return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Card>
         <CardHeader
@@ -75,5 +74,5 @@ export const ProductCard = ({
         </CardActions>
       </Card>
     </Grid>
-  ) : null;
+  );
 };

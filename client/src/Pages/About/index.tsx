@@ -1,9 +1,9 @@
-import { Typography } from '@mui/material';
+import { PageTitle } from '../../Components';
 
 export const AboutPage = () => {
   return (
     <>
-      <Typography variant='h2'>About</Typography>
+      <PageTitle title='About' />
     </>
   );
 };

@@ -1,3 +1,4 @@
 import { IProduct } from '..';
 
-export interface IProductCardProps extends Omit<IProduct, 'description'> {}
+export interface IProductCardProps
+  extends Omit<IProduct, 'description' | 'quantityInStock'> {}

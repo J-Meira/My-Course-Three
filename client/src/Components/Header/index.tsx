@@ -22,7 +22,7 @@ import {
 
 import { IHeaderProps } from '../../@Types';
 
-const midLinks = ['about', 'contact'];
+const midLinks = ['about', 'buggy', 'contact'];
 const rightLinks = ['sign-in', 'sign-up'];
 
 export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
