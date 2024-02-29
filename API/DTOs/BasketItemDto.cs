@@ -3,7 +3,7 @@ namespace API.DTOs
   public record BasketItemDto(
     int productId,
     string name,
-    long price,
+    decimal price,
     string pictureUrl,
     string brand,
     string type,

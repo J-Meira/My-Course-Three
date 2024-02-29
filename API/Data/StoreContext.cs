@@ -7,5 +7,12 @@ namespace API.Data
   {
     public DbSet<Product> Products { get; set; }
     public DbSet<Basket> Baskets { get; set; }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+      configurationBuilder
+        .Properties<decimal>()
+        .HaveColumnType("decimal(10,2)");
+    }
   }
 }

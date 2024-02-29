@@ -42,7 +42,7 @@ export const ProductPage = () => {
   const handleUpdateCart = () => {
     if (!product) return;
 
-    setStatus('update');
+    setStatus('pending');
     if (!item || quantity > item?.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
       basketServices
@@ -119,7 +119,7 @@ export const ProductPage = () => {
         </Box>
         <Divider sx={{ mb: 2, mt: 1 }} />
         <Typography sx={{ fontWeight: 500 }} variant='h4' color='secondary'>
-          ${currencyFormat(product.price)}
+          $ {currencyFormat(product.price)}
         </Typography>
         <TableContainer>
           <Table>

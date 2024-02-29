@@ -14,6 +14,7 @@ import { LoadingIconButton } from '../../Components';
 import { MdAdd, MdDelete, MdRemove } from 'react-icons/md';
 import { basketServices } from '../../Services';
 import { Link } from 'react-router-dom';
+import { currencyFormat } from '../../Utils';
 
 export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
   const [status, setStatus] = useState('');
@@ -77,7 +78,7 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
                 </Box>
               </TableCell>
               <TableCell align='right'>
-                ${(item.price / 100).toFixed(2)}
+                $ {currencyFormat(item.price)}
               </TableCell>
               <TableCell align='center'>
                 <Box display='flex' alignItems='center' justifyContent='center'>
@@ -101,7 +102,7 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
                 </Box>
               </TableCell>
               <TableCell align='right'>
-                ${((item.price / 100) * item.quantity).toFixed(2)}
+                $ {currencyFormat(item.price * item.quantity)}
               </TableCell>
               {isBasket && (
                 <TableCell align='right'>

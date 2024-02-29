@@ -19,9 +19,7 @@ export const BasketSummary = ({ items }: IBasketTableProps) => {
       return (prev += item.quantity * item.price);
     }, 0);
     setSubTotal(sum);
-    setDeliveryFee(sum > 100000 ? 0 : 5000);
-
-    // eslint-disable-next-line
+    setDeliveryFee(sum > 500 ? 0 : 100);
   }, [items]);
 
   return (
@@ -31,24 +29,24 @@ export const BasketSummary = ({ items }: IBasketTableProps) => {
           <TableBody>
             <TableRow>
               <TableCell colSpan={2}>Subtotal</TableCell>
-              <TableCell align='right'>${currencyFormat(subTotal)}</TableCell>
+              <TableCell align='right'>$ {currencyFormat(subTotal)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>Delivery fee*</TableCell>
               <TableCell align='right'>
-                ${currencyFormat(deliveryFee)}
+                $ {currencyFormat(deliveryFee)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>Total</TableCell>
               <TableCell align='right'>
-                ${currencyFormat(subTotal + deliveryFee)}
+                $ {currencyFormat(subTotal + deliveryFee)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={3}>
                 <Typography style={{ fontStyle: 'italic' }}>
-                  *Orders over $1000 qualify for free delivery
+                  *Orders over $ 500 qualify for free delivery
                 </Typography>
               </TableCell>
             </TableRow>
