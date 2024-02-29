@@ -1,4 +1,6 @@
-import { Header, SnackContainer } from './Components';
+import { useCallback, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+
 import {
   CssBaseline,
   Container,
@@ -6,43 +8,50 @@ import {
   ThemeProvider,
   createTheme,
 } from '@mui/material';
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
 
-const localTheme = localStorage.getItem('V_D_R') || 'false';
+import { Header, Loading, SnackContainer } from './Components';
+
+import { useAppDispatch, useAppSelector } from './Redux/Hooks';
+import { getBasket } from './Redux/Slices';
 
 export const App = () => {
-  const [isDark, setIsDark] = useState(JSON.parse(localTheme));
+  const dispatch = useAppDispatch();
+  const { isDarkMode } = useAppSelector((state) => state.system);
 
   const theme = createTheme({
     palette: {
-      mode: isDark ? 'dark' : 'light',
+      mode: isDarkMode ? 'dark' : 'light',
     },
   });
 
-  const handleTheme = () => {
-    setIsDark(!isDark);
-    localStorage.setItem('V_D_R', JSON.stringify(!isDark));
-  };
+  const initApp = useCallback(() => {
+    dispatch(getBasket());
+  }, [dispatch]);
+
+  useEffect(() => {
+    initApp();
+  }, [initApp]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SnackContainer>
-        <Header isDark={isDark} themeToggle={handleTheme} />
+        <Header />
         <Paper
           sx={{
             padding: '6rem 0',
             overflowY: 'auto',
             overflowX: 'hidden',
-            backgroundColor: isDark ? '#191919' : '#f0f0f7',
+            backgroundColor: isDarkMode ? '#191919' : '#f0f0f7',
             minHeight: '100vh',
           }}
+          square
         >
           <Container>
             <Outlet />
           </Container>
         </Paper>
+        <Loading />
       </SnackContainer>
     </ThemeProvider>
   );

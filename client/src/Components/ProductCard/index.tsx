@@ -11,12 +11,12 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
+import { MdAddShoppingCart, MdVisibility } from 'react-icons/md';
 
 import { IProductCardProps } from '../../@Types';
 import { currencyFormat } from '../../Utils';
-import { useState } from 'react';
-import { basketServices } from '../../Services';
-import { MdAddShoppingCart, MdVisibility } from 'react-icons/md';
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { addBasketItem } from '../../Redux/Slices';
 
 export const ProductCard = ({
   id,
@@ -26,17 +26,11 @@ export const ProductCard = ({
   type,
   brand,
 }: IProductCardProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.basket.status);
   const destiny = `/product/${id}`;
 
-  const addItem = (id: number) => {
-    setIsLoading(true);
-    basketServices
-      .addItem({ productId: id, quantity: 1 })
-      .catch(console.log)
-      .finally(() => setIsLoading(false));
-  };
+  const isLoading = () => status === 'pendingAddItem' + id;
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -80,8 +74,11 @@ export const ProductCard = ({
           </Typography>
         </CardContent>
         <CardActions>
-          <Button disabled={isLoading} onClick={() => addItem(id)}>
-            {isLoading ? (
+          <Button
+            disabled={isLoading()}
+            onClick={() => dispatch(addBasketItem({ productId: id }))}
+          >
+            {isLoading() ? (
               <CircularProgress size='1rem' />
             ) : (
               <MdAddShoppingCart />

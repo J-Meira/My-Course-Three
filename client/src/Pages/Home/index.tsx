@@ -1,25 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Grid } from '@mui/material';
 
-import { Loading, ProductCard } from '../../Components';
+import { ProductCard } from '../../Components';
 
-import { IProduct } from '../../@Types';
-import { productServices } from '../../Services';
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { getAllProducts, productSelectors } from '../../Redux/Slices';
 
 export const HomePage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const dispatch = useAppDispatch();
+  const { productsLoaded } = useAppSelector((state) => state.products);
+  const products = useAppSelector(productSelectors.selectAll);
 
   useEffect(() => {
-    productServices
-      .getAll()
-      .then((r) => setProducts(r))
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) return <Loading />;
+    if (!productsLoaded) dispatch(getAllProducts());
+  }, [productsLoaded, dispatch]);
 
   return (
     <Grid container spacing={4}>

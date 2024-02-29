@@ -5,12 +5,16 @@ import {
   TableRow,
   TableCell,
   Typography,
+  Paper,
+  Button,
+  Box,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { IBasketTableProps } from '../../@Types';
 import { currencyFormat } from '../../Utils';
+import { Link } from 'react-router-dom';
 
-export const BasketSummary = ({ items }: IBasketTableProps) => {
+export const BasketSummary = ({ items, isBasket }: IBasketTableProps) => {
   const [subTotal, setSubTotal] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(0);
 
@@ -23,8 +27,12 @@ export const BasketSummary = ({ items }: IBasketTableProps) => {
   }, [items]);
 
   return (
-    <>
-      <TableContainer sx={{ width: '100%', maxWidth: 365 }}>
+    <Box display='flex' flexDirection='column' alignItems='flex-end'>
+      <TableContainer
+        component={Paper}
+        square
+        sx={{ width: '100%', maxWidth: 365 }}
+      >
         <Table>
           <TableBody>
             <TableRow>
@@ -50,9 +58,24 @@ export const BasketSummary = ({ items }: IBasketTableProps) => {
                 </Typography>
               </TableCell>
             </TableRow>
+            {isBasket && (
+              <TableRow>
+                <TableCell colSpan={3} sx={{ border: 0 }}>
+                  <Button
+                    component={Link}
+                    to='/checkout'
+                    variant='contained'
+                    size='large'
+                    fullWidth
+                  >
+                    Checkout
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 };

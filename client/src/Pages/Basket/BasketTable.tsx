@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import {
   TableContainer,
   Table,
@@ -7,43 +9,38 @@ import {
   TableBody,
   Box,
   Typography,
+  Paper,
 } from '@mui/material';
-import { IBasketTableProps } from '../../@Types';
-import { useState } from 'react';
-import { LoadingIconButton } from '../../Components';
 import { MdAdd, MdDelete, MdRemove } from 'react-icons/md';
-import { basketServices } from '../../Services';
-import { Link } from 'react-router-dom';
+
+import { LoadingIconButton } from '../../Components';
+
+import { IBasketTableProps } from '../../@Types';
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { addBasketItem, removeBasketItem } from '../../Redux/Slices';
 import { currencyFormat } from '../../Utils';
 
 export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
-  const [status, setStatus] = useState('');
+  const dispatch = useAppDispatch();
+  const { status } = useAppSelector((state) => state.basket);
 
-  const addItem = (id: number) => {
-    setStatus('add' + id);
-    basketServices
-      .addItem({
+  const addItem = (id: number) =>
+    dispatch(
+      addBasketItem({
         productId: id,
-        quantity: 1,
-      })
-      .catch(console.log)
-      .finally(() => setStatus(''));
-  };
+      }),
+    );
 
-  const removeItem = (id: number, quantity?: number) => {
-    const type = quantity ? 'del' : 'rem';
-    setStatus(type + id);
-    basketServices
-      .removeItem({
+  const removeItem = (id: number, quantity?: number) =>
+    dispatch(
+      removeBasketItem({
         productId: id,
-        quantity: quantity || 1,
-      })
-      .catch(console.log)
-      .finally(() => setStatus(''));
-  };
+        quantity: quantity,
+      }),
+    );
 
   return (
-    <TableContainer>
+    <TableContainer component={Paper} square>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
@@ -56,7 +53,10 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
         </TableHead>
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.productId}>
+            <TableRow
+              key={item.productId}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
               <TableCell component='th' scope='row'>
                 <Box
                   display='flex'
@@ -84,7 +84,9 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
                 <Box display='flex' alignItems='center' justifyContent='center'>
                   {isBasket && (
                     <LoadingIconButton
-                      isLoading={status === 'rem' + item.productId}
+                      isLoading={
+                        status === 'pendingRemoveItem' + item.productId
+                      }
                       onClick={() => removeItem(item.productId)}
                       color='error'
                       icon={<MdRemove />}
@@ -93,7 +95,7 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
                   <Typography sx={{ mr: 1, ml: 1 }}>{item.quantity}</Typography>
                   {isBasket && (
                     <LoadingIconButton
-                      isLoading={status === 'add' + item.productId}
+                      isLoading={status === 'pendingAddItem' + item.productId}
                       onClick={() => addItem(item.productId)}
                       color='secondary'
                       icon={<MdAdd />}
@@ -107,7 +109,7 @@ export const BasketTable = ({ items, isBasket }: IBasketTableProps) => {
               {isBasket && (
                 <TableCell align='right'>
                   <LoadingIconButton
-                    isLoading={status === 'del' + item.productId}
+                    isLoading={status === 'pendingDeleteItem' + item.productId}
                     onClick={() => removeItem(item.productId, item.quantity)}
                     color='secondary'
                     icon={<MdDelete />}

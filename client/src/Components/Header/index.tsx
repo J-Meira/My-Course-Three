@@ -20,19 +20,30 @@ import {
   MdShoppingCart,
 } from 'react-icons/md';
 
-import { IHeaderProps } from '../../@Types';
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { handleTheme } from '../../Redux/Slices';
 
 const midLinks = ['about', 'buggy', 'contact'];
 const rightLinks = ['sign-in', 'sign-up'];
 
-export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
+export const Header = () => {
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const { isDarkMode } = useAppSelector((state) => state.system);
+  const basket = useAppSelector((state) => state.basket.current);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const openMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
 
   const isActive = (item: string) => pathname.indexOf(item) >= 0;
+
+  const getTotalItems = (): number =>
+    basket
+      ? basket.items.reduce((prev, item) => {
+          return (prev += item.quantity);
+        }, 0)
+      : 0;
 
   return (
     <>
@@ -80,10 +91,10 @@ export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
               color='inherit'
               aria-label='theme switch'
               edge='start'
-              onClick={themeToggle}
+              onClick={() => dispatch(handleTheme())}
               sx={{ mr: 2 }}
             >
-              {isDark ? <MdLightMode /> : <MdDarkMode />}
+              {isDarkMode ? <MdLightMode /> : <MdDarkMode />}
             </IconButton>
             <IconButton
               color='inherit'
@@ -93,7 +104,7 @@ export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
               to='/basket'
               sx={{ mr: 2 }}
             >
-              <Badge badgeContent={5} color='secondary'>
+              <Badge badgeContent={getTotalItems()} color='secondary'>
                 <MdShoppingCart />
               </Badge>
             </IconButton>

@@ -18,21 +18,31 @@ import {
 } from '@mui/material';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
-import { Loading } from '../../Components';
 import { NotFoundPage } from '..';
 
-import { IBasketItem, IProduct } from '../../@Types';
+import { IBasketItem } from '../../@Types';
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import {
+  addBasketItem,
+  getLoading,
+  getProductById,
+  productSelectors,
+  removeBasketItem,
+} from '../../Redux/Slices';
 import { currencyFormat } from '../../Utils';
-import { basketServices, productServices } from '../../Services';
 
 export const ProductPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<IProduct | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const basket = useAppSelector((state) => state.basket.current);
+  const status = useAppSelector((state) => state.basket.status);
+  const product = useAppSelector((state) =>
+    productSelectors.selectById(state, Number(id)),
+  );
+  const isLoading = useAppSelector(getLoading);
   const [quantity, setQuantity] = useState(0);
   const [item, setItem] = useState<IBasketItem | null>(null);
-  const [status, setStatus] = useState('');
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (parseInt(event.currentTarget.value) >= 0)
@@ -41,52 +51,32 @@ export const ProductPage = () => {
 
   const handleUpdateCart = () => {
     if (!product) return;
-
-    setStatus('pending');
     if (!item || quantity > item?.quantity) {
       const updatedQuantity = item ? quantity - item.quantity : quantity;
-      basketServices
-        .addItem({
+      dispatch(
+        addBasketItem({
           productId: product.id,
           quantity: updatedQuantity,
-        })
-        .catch(console.log)
-        .finally(() => setStatus(''));
+        }),
+      );
     } else {
       const updatedQuantity = item.quantity - quantity;
-      basketServices
-        .removeItem({
+      dispatch(
+        removeBasketItem({
           productId: product.id,
           quantity: updatedQuantity,
-        })
-        .catch(console.log)
-        .finally(() => setStatus(''));
+        }),
+      );
+      if (quantity === 0) setItem(null);
     }
   };
 
   useEffect(() => {
-    if (id) {
-      productServices
-        .getById(Number(id))
-        .then((p) => {
-          setProduct(p);
-          basketServices
-            .getBasket()
-            .then((b) => {
-              const test = b?.items.find((i) => i.productId === p?.id);
-              if (test) {
-                setItem(test);
-                setQuantity(test.quantity);
-              }
-            })
-            .catch(console.log);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    }
-  }, [id]);
-
-  if (isLoading) return <Loading message='Loading product...' />;
+    if (!product) dispatch(getProductById(Number(id)));
+    const test = basket?.items.find((i) => i.productId === product?.id);
+    setItem(test || null);
+    setQuantity(test?.quantity || 0);
+  }, [id, basket, product, dispatch]);
 
   return product ? (
     <Grid container spacing={6}>
@@ -168,7 +158,7 @@ export const ProductPage = () => {
               variant='contained'
               fullWidth
             >
-              {status === 'pending' ? (
+              {status.includes('pending') ? (
                 <CircularProgress size='1.5rem' />
               ) : item ? (
                 'Update Quantity'
@@ -180,7 +170,7 @@ export const ProductPage = () => {
         </Grid>
       </Grid>
     </Grid>
-  ) : (
+  ) : !isLoading ? (
     <NotFoundPage />
-  );
+  ) : null;
 };
