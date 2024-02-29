@@ -1,8 +1,10 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useToast } from '../Utils';
 import { router } from '../Router';
 
 axios.defaults.baseURL = 'http://localhost:5000/';
+axios.defaults.withCredentials = true;
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 axios.interceptors.response.use(
@@ -41,11 +43,16 @@ axios.interceptors.response.use(
 );
 
 export const api = {
-  get: (url: string) => axios.get(url).then(responseBody),
-  post: (url: string, body: object) => axios.post(url, body).then(responseBody),
-  put: (url: string, body: object) => axios.put(url, body).then(responseBody),
-  del: (url: string) => axios.delete(url).then(responseBody),
+  get: (url: string, config?: AxiosRequestConfig) =>
+    axios.get(url, config).then(responseBody),
+  post: (url: string, body: object, config?: AxiosRequestConfig) =>
+    axios.post(url, body, config).then(responseBody),
+  put: (url: string, body: object, config?: AxiosRequestConfig) =>
+    axios.put(url, body, config).then(responseBody),
+  delete: (url: string, config?: AxiosRequestConfig) =>
+    axios.delete(url, config).then(responseBody),
 };
 
+export * from './BasketServices';
 export * from './BuggyServices';
 export * from './ProductServices';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import {
   AppBar,
@@ -26,10 +26,13 @@ const midLinks = ['about', 'buggy', 'contact'];
 const rightLinks = ['sign-in', 'sign-up'];
 
 export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
+  const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const openMenu = (event: React.MouseEvent<HTMLElement>) =>
     setAnchorEl(event.currentTarget);
+
+  const isActive = (item: string) => pathname.indexOf(item) >= 0;
 
   return (
     <>
@@ -59,7 +62,12 @@ export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
             {midLinks.map((item) => (
               <Button
                 key={item}
-                sx={{ color: '#fff' }}
+                sx={{
+                  color: '#fff',
+                  backgroundColor: isActive(item)
+                    ? 'rgba(0,0,0,0.2)'
+                    : undefined,
+                }}
                 component={Link}
                 to={'/' + item}
               >
@@ -81,7 +89,8 @@ export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
               color='inherit'
               aria-label='cart toggle'
               edge='start'
-              onClick={() => console.log('cart-toggle')}
+              component={Link}
+              to='/basket'
               sx={{ mr: 2 }}
             >
               <Badge badgeContent={5} color='secondary'>
@@ -92,7 +101,12 @@ export const Header = ({ isDark, themeToggle }: IHeaderProps) => {
               {rightLinks.map((item) => (
                 <Button
                   key={item}
-                  sx={{ color: '#fff' }}
+                  sx={{
+                    color: '#fff',
+                    backgroundColor: isActive(item)
+                      ? 'rgba(0,0,0,0.2)'
+                      : undefined,
+                  }}
                   component={Link}
                   to={'/' + item}
                 >

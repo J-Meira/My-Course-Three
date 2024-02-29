@@ -12,7 +12,7 @@ import {
   ListItemText,
 } from '@mui/material';
 
-export const Buggy = () => {
+export const BuggyPage = () => {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const getValidationError = () => {

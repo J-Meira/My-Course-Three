@@ -4,7 +4,9 @@ import { App } from '../App';
 
 import {
   AboutPage,
-  Buggy,
+  BasketPage,
+  BuggyPage,
+  CheckoutPage,
   ContactPage,
   HomePage,
   NotFoundPage,
@@ -27,7 +29,9 @@ export const router = createBrowserRouter([
       { path: '/server-error', element: <ServerErrorPage /> },
       { path: '/sign-in', element: <SignInPage /> },
       { path: '/sign-up', element: <SignUpPage /> },
-      { path: '/buggy', element: <Buggy /> },
+      { path: '/buggy', element: <BuggyPage /> },
+      { path: '/basket', element: <BasketPage /> },
+      { path: '/checkout', element: <CheckoutPage /> },
       { path: '*', element: <Navigate replace to='/not-found' /> },
     ],
   },
