@@ -3,7 +3,7 @@ import { IBasket, IBasketItemUpdate } from '../@Types';
 
 const getBasket = (): Promise<IBasket | null> => api.get('basket');
 const addItem = (params: IBasketItemUpdate): Promise<IBasket | null> =>
-  api.post('basket', {}, { params: { ...params } });
+  api.post('basket', {}, { params });
 const removeItem = (params: IBasketItemUpdate) =>
   api.delete('basket', { params: { ...params } });
 

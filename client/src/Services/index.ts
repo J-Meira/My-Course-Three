@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useToast } from '../Utils';
 import { router } from '../Router';
+import { PaginationResponse } from '../@Types';
 
 axios.defaults.baseURL = 'http://localhost:5000/';
 axios.defaults.withCredentials = true;
@@ -10,6 +11,14 @@ const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
 
 axios.interceptors.response.use(
   async (response) => {
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+      response.data = new PaginationResponse(
+        response.data,
+        JSON.parse(pagination),
+      );
+      return response;
+    }
     await sleep();
     return response;
   },
