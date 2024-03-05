@@ -2,10 +2,11 @@ import { Grid } from '@mui/material';
 
 import { Pagination } from '../../Components';
 import { List } from './List';
+import { Filters } from './Filters';
 
 import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
 import { setPageNumber } from '../../Redux/Slices';
-import { Filters } from './Filters';
+
 export const HomePage = () => {
   const dispatch = useAppDispatch();
   const { metaData } = useAppSelector((state) => state.products);
