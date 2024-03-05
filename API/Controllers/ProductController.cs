@@ -1,12 +1,10 @@
 
-using System.Text.Json;
 using API.Data;
 using API.Entities;
 using API.Extensions;
 using API.RequestHelpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 namespace API.Controllers
 {
