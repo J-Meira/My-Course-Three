@@ -1,10 +1,20 @@
+import { useEffect } from 'react';
 import { Grid } from '@mui/material';
-import { IProductsListProps } from '../../@Types';
-import { ProductCard, ProductCardSkeleton } from '../../Components';
-import { useAppSelector } from '../../Redux';
 
-export const List = ({ products }: IProductsListProps) => {
+import { ProductCard, ProductCardSkeleton } from '../../Components';
+
+import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { productSelectors, getAllProducts } from '../../Redux/Slices';
+
+export const List = () => {
+  const dispatch = useAppDispatch();
   const { productsLoaded } = useAppSelector((state) => state.products);
+  const products = useAppSelector(productSelectors.selectAll);
+
+  useEffect(() => {
+    if (!productsLoaded) dispatch(getAllProducts());
+  }, [productsLoaded, dispatch]);
+
   return (
     <Grid container spacing={4}>
       {products.map((p) =>

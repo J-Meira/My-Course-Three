@@ -4,6 +4,5 @@ export * from './LoadingIconButton';
 export * from './PageTitle';
 export * from './Pagination';
 export * from './ProductCard';
-export * from './ProductsList';
 export * from './RadioButtonGroup';
 export * from './SnackProvider';
