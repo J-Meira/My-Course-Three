@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { basketSlice, productsSlice, systemSlice } from './Slices';
+import { authSlice, basketSlice, productsSlice, systemSlice } from './Slices';
 
 export const store = configureStore({
   reducer: {
+    auth: authSlice.reducer,
     basket: basketSlice.reducer,
     products: productsSlice.reducer,
     system: systemSlice.reducer,

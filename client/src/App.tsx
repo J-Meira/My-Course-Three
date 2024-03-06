@@ -12,7 +12,7 @@ import {
 import { Header, Loading, SnackContainer } from './Components';
 
 import { useAppDispatch, useAppSelector } from './Redux/Hooks';
-import { getBasket } from './Redux/Slices';
+import { getBasket, getUser } from './Redux/Slices';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +26,7 @@ export const App = () => {
 
   const initApp = useCallback(() => {
     dispatch(getBasket());
+    dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {

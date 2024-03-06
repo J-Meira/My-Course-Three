@@ -2,15 +2,23 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useToast } from '../Utils';
 import { router } from '../Router';
 import { PaginationResponse } from '../@Types';
+import { store } from '../Redux';
 
 axios.defaults.baseURL = 'http://localhost:5000/';
 axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
+axios.interceptors.request.use((config) => {
+  const token = store.getState().auth.user?.token;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 axios.interceptors.response.use(
   async (response) => {
+    await sleep();
     const pagination = response.headers['pagination'];
     if (pagination) {
       response.data = new PaginationResponse(
@@ -19,7 +27,6 @@ axios.interceptors.response.use(
       );
       return response;
     }
-    await sleep();
     return response;
   },
   (error: AxiosError) => {
@@ -64,6 +71,7 @@ export const api = {
     axios.delete(url, config).then(responseBody),
 };
 
+export * from './AuthServices';
 export * from './BasketServices';
 export * from './BuggyServices';
 export * from './ProductServices';

@@ -22,6 +22,11 @@ export const getBasket = createAsyncThunk<IBasket | null>(
       return thunkAPI.rejectWithValue({ error });
     }
   },
+  {
+    condition: () => {
+      if (!useCookies.get('buyerId')) return false;
+    },
+  },
 );
 
 export const addBasketItem = createAsyncThunk<
