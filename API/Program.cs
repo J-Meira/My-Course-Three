@@ -71,6 +71,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddCors();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<BasketService>();
 
 var app = builder.Build();
 
@@ -117,7 +118,7 @@ try
 }
 catch (Exception ex)
 {
-  logger.LogError(ex, "A problem occurred dduring migration");
+  logger.LogError(ex, "A problem occurred during migration");
 }
 
 app.Run();

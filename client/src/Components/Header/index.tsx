@@ -29,7 +29,7 @@ import {
 } from 'react-icons/md';
 
 import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
-import { handleTheme, signOut } from '../../Redux/Slices';
+import { clearBasket, handleTheme, signOut } from '../../Redux/Slices';
 
 const midLinks = [
   { link: '/about', label: 'about' },
@@ -55,6 +55,7 @@ export const Header = () => {
   const handleSignOut = () => {
     setAnchorEl(null);
     setIsOpen(false);
+    dispatch(clearBasket());
     dispatch(signOut());
   };
   const openMenu = (event: React.MouseEvent<HTMLElement>) =>

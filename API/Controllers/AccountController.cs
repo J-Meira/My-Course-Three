@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,10 +8,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-  public class AccountController(UserManager<User> userManager, TokenService tokenService) : BaseApiController
+  public class AccountController(
+    UserManager<User> userManager,
+    TokenService tokenService,
+    BasketService basketService
+  ) : BaseApiController
   {
     private readonly UserManager<User> _userManager = userManager;
     private readonly TokenService _tokenService = tokenService;
+    private readonly BasketService _basketService = basketService;
 
     [HttpPost("sign-in")]
     public async Task<ActionResult<SignInRdto>> SignIn(SignInDto signInDto)
@@ -20,10 +26,27 @@ namespace API.Controllers
       {
         return Unauthorized();
       }
+
+      var userBasket = await _basketService.RetrieveBasket(signInDto.UserName);
+      var anonBasket = await _basketService.RetrieveBasket(Request.Cookies["buyerId"]);
+
+      if (anonBasket != null)
+      {
+        await _basketService.TransferBasket(
+          anonBasket,
+          user.UserName,
+          userBasket
+        );
+        Response.Cookies.Delete("buyerId");
+      }
+
       return new SignInRdto
       {
         Email = user.Email,
-        Token = await _tokenService.GenerateToken(user)
+        Token = await _tokenService.GenerateToken(user),
+        Basket = anonBasket != null ?
+          anonBasket.MapBasketToDto() :
+          userBasket?.MapBasketToDto()
       };
     }
 
@@ -58,10 +81,13 @@ namespace API.Controllers
     {
       var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
+      var userBasket = await _basketService.RetrieveBasket(User.Identity.Name);
+
       return new SignInRdto
       {
         Email = user.Email,
         Token = await _tokenService.GenerateToken(user),
+        Basket = userBasket?.MapBasketToDto()
       };
     }
   }

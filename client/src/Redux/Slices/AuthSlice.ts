@@ -5,7 +5,7 @@ import { IAuthState, IUser } from '../../@Types';
 import { authServices } from '../../Services';
 import { router } from '../../Router';
 import { useToast } from '../../Utils';
-import { removeLoading, setLoading } from '.';
+import { removeLoading, setBasket, setLoading } from '.';
 
 const initialState: IAuthState = {
   user: null,
@@ -15,10 +15,12 @@ export const signIn = createAsyncThunk<IUser, FieldValues>(
   'auth/signIn',
   async (data, thunkAPI) => {
     try {
-      const user = await authServices.signIn({
+      const userDto = await authServices.signIn({
         userName: data.userName,
         password: data.password,
       });
+      const { basket, ...user } = userDto;
+      if (basket) thunkAPI.dispatch(setBasket(basket));
       localStorage.setItem('user', JSON.stringify(user));
       return user;
     } catch (error) {
@@ -34,7 +36,9 @@ export const getUser = createAsyncThunk<IUser>(
     try {
       thunkAPI.dispatch(setLoading('pendingGetUser'));
       thunkAPI.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)));
-      const user = await authServices.getUser();
+      const userDto = await authServices.getUser();
+      const { basket, ...user } = userDto;
+      if (basket) thunkAPI.dispatch(setBasket(basket));
       localStorage.setItem('user', JSON.stringify(user));
       thunkAPI.dispatch(removeLoading('pendingGetUser'));
       return user;
@@ -78,7 +82,7 @@ export const authSlice = createSlice({
       },
     );
     builder.addMatcher(isAnyOf(signIn.rejected), (_, action) => {
-      console.log(action);
+      throw action.payload;
     });
   },
 });

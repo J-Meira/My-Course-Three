@@ -15,12 +15,17 @@ import {
   SignInPage,
   SignUpPage,
 } from '../Pages';
+import { RequireAuth } from './RequireAuth';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      {
+        element: <RequireAuth />,
+        children: [{ path: '/checkout', element: <CheckoutPage /> }],
+      },
       { path: '/', element: <HomePage /> },
       { path: '/product/:id', element: <ProductPage /> },
       { path: '/about', element: <AboutPage /> },
@@ -31,7 +36,6 @@ export const router = createBrowserRouter([
       { path: '/sign-up', element: <SignUpPage /> },
       { path: '/buggy', element: <BuggyPage /> },
       { path: '/basket', element: <BasketPage /> },
-      { path: '/checkout', element: <CheckoutPage /> },
       { path: '*', element: <Navigate replace to='/not-found' /> },
     ],
   },

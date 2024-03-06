@@ -65,6 +65,9 @@ export const basketSlice = createSlice({
       state.current = null;
       useCookies.remove('buyerId');
     },
+    setBasket: (state, action) => {
+      state.current = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addBasketItem.pending, (state, action) => {
@@ -106,4 +109,4 @@ export const basketSlice = createSlice({
   },
 });
 
-export const { clearBasket } = basketSlice.actions;
+export const { clearBasket, setBasket } = basketSlice.actions;

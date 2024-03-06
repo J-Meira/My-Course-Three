@@ -31,7 +31,11 @@ export const SignInPage = () => {
   });
 
   const submitForm = async (data: FieldValues) => {
-    await dispatch(signIn(data));
+    try {
+      await dispatch(signIn(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
