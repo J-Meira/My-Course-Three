@@ -6,3 +6,4 @@ export * from './Pagination';
 export * from './ProductCard';
 export * from './RadioButtonGroup';
 export * from './SnackProvider';
+export * from './TextInput';

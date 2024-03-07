@@ -1,4 +1,4 @@
-export * from './CheckBoxButtons';
+export * from './Inputs';
 export * from './Header';
 export * from './Loading';
 export * from './LoadingIconButton';
@@ -6,5 +6,4 @@ export * from './PageTitle';
 export * from './Pagination';
 export * from './ProductCard';
 export * from './ProductSearch';
-export * from './RadioButtonGroup';
 export * from './SnackContainer';
