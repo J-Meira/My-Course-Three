@@ -16,7 +16,7 @@ namespace API.Controllers
     private readonly BasketService _basketService = basketService;
 
     [HttpGet(Name = "GetBasket")]
-    public async Task<ActionResult<BasketDto>> GetBasket()
+    public async Task<ActionResult<BasketRdto>> GetBasket()
     {
       var basket = await _basketService.RetrieveBasket(GetBuyerId());
       if (basket is null) return NotFound();
@@ -24,7 +24,7 @@ namespace API.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<BasketDto>> AddItemToBasket(int productId, int quantity)
+    public async Task<ActionResult<BasketRdto>> AddItemToBasket(int productId, int quantity)
     {
       var basket = await _basketService.RetrieveBasket(GetBuyerId());
       if (basket is null) basket = CreateBasket();
