@@ -74,4 +74,5 @@ export const api = {
 export * from './AuthServices';
 export * from './BasketServices';
 export * from './BuggyServices';
+export * from './OrderServices';
 export * from './ProductServices';

@@ -5,8 +5,11 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
+import { TextInput } from '../../Components';
 
 export const PaymentForm = () => {
+  const { control } = useFormContext();
   return (
     <>
       <Typography variant='h6' gutterBottom>
@@ -14,18 +17,15 @@ export const PaymentForm = () => {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id='cardName'
+          <TextInput
+            name='nameOnCard'
             label='Name on card'
-            fullWidth
             autoComplete='cc-name'
-            variant='standard'
+            control={control}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-            required
             id='cardNumber'
             label='Card number'
             fullWidth
@@ -35,7 +35,6 @@ export const PaymentForm = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-            required
             id='expDate'
             label='Expiry date'
             fullWidth
@@ -45,7 +44,6 @@ export const PaymentForm = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-            required
             id='cvv'
             label='CVV'
             helperText='Last three digits on signature strip'

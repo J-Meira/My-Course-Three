@@ -9,4 +9,5 @@ export interface ITextInputProps extends UseControllerProps {
   type?: string;
   grid?: GridProps;
   noGrid?: boolean;
+  autoComplete?: string;
 }

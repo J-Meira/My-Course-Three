@@ -1,6 +1,6 @@
 import { IBasketItem } from '..';
 
-export interface IBasketTableProps {
+export interface IBasketContentProps {
   items: IBasketItem[];
   isBasket?: boolean;
 }

@@ -1,3 +1,4 @@
+export * from './BasketContent';
 export * from './Inputs';
 export * from './Header';
 export * from './Loading';

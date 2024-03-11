@@ -1,4 +1,4 @@
-export * from './BasketTable';
+export * from './BasketContent';
 export * from './CheckBoxButtons';
 export * from './LoadingIconButton';
 export * from './PageTitle';

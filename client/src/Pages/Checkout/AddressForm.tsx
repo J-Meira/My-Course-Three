@@ -24,8 +24,8 @@ export const AddressForm = () => {
         />
         <TextInput
           control={control}
-          name='address1'
-          label='Address 1'
+          name='address2'
+          label='Address 2'
           grid={{ sm: 12 }}
         />
         <TextInput control={control} name='city' label='City' />
