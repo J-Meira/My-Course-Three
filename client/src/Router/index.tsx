@@ -10,6 +10,7 @@ import {
   ContactPage,
   HomePage,
   NotFoundPage,
+  OrdersPage,
   ProductPage,
   ServerErrorPage,
   SignInPage,
@@ -24,7 +25,10 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <RequireAuth />,
-        children: [{ path: '/checkout', element: <CheckoutPage /> }],
+        children: [
+          { path: '/checkout', element: <CheckoutPage /> },
+          { path: '/my-orders', element: <OrdersPage /> },
+        ],
       },
       { path: '/', element: <HomePage /> },
       { path: '/product/:id', element: <ProductPage /> },

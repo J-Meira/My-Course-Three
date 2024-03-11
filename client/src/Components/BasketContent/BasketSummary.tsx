@@ -14,7 +14,11 @@ import { IBasketContentProps } from '../../@Types';
 import { currencyFormat } from '../../Utils';
 import { Link } from 'react-router-dom';
 
-export const BasketTotals = ({ items, isBasket }: IBasketContentProps) => {
+export const BasketTotals = ({
+  items,
+  isBasket,
+  showPaper,
+}: IBasketContentProps) => {
   const [subTotal, setSubTotal] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(0);
 
@@ -71,7 +75,7 @@ export const BasketTotals = ({ items, isBasket }: IBasketContentProps) => {
 
   return (
     <Box display='flex' flexDirection='column' alignItems='flex-end'>
-      {isBasket ? (
+      {showPaper ? (
         <TableContainer
           component={Paper}
           square

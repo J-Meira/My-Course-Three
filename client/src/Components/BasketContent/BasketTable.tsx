@@ -20,7 +20,11 @@ import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
 import { addBasketItem, removeBasketItem } from '../../Redux/Slices';
 import { currencyFormat } from '../../Utils';
 
-export const BasketItems = ({ items, isBasket }: IBasketContentProps) => {
+export const BasketItems = ({
+  items,
+  isBasket,
+  showPaper,
+}: IBasketContentProps) => {
   const dispatch = useAppDispatch();
   const { status } = useAppSelector((state) => state.basket);
 
@@ -114,7 +118,7 @@ export const BasketItems = ({ items, isBasket }: IBasketContentProps) => {
     </Table>
   ))();
 
-  return isBasket ? (
+  return showPaper ? (
     <TableContainer component={Paper} square>
       {render}
     </TableContainer>

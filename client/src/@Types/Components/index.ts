@@ -7,3 +7,4 @@ export * from './ProductCard';
 export * from './RadioButtonGroup';
 export * from './SnackProvider';
 export * from './TextInput';
+export * from './CheckInput';

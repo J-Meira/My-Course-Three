@@ -11,7 +11,7 @@ export const BasketPage = () => {
     <>
       <PageTitle title='Basket' />
       {basket ? (
-        <BasketContent items={basket.items} isBasket />
+        <BasketContent items={basket.items} isBasket showPaper />
       ) : (
         <Typography variant='body1'>Basket is empty!</Typography>
       )}

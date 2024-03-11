@@ -1,11 +1,23 @@
-import { Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import { IPageTitleProps } from '../../@Types';
 
-export const PageTitle = ({ title, subTitle }: IPageTitleProps) => (
+export const PageTitle = ({ title, subTitle, backAction }: IPageTitleProps) => (
   <>
-    <Typography variant='h2' sx={{ fontSize: '2.5rem', fontWeight: 600 }}>
-      {title}
-    </Typography>
+    <Box display='flex' justifyContent='space-between'>
+      <Typography variant='h2' sx={{ fontSize: '2.5rem', fontWeight: 600 }}>
+        {title}
+      </Typography>
+      {backAction && (
+        <Button
+          onClick={backAction}
+          sx={{ m: 2 }}
+          size='large'
+          variant='contained'
+        >
+          Back to orders
+        </Button>
+      )}
+    </Box>
     {subTitle && (
       <Typography
         variant='h4'
