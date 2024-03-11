@@ -5,6 +5,7 @@ using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -89,6 +90,16 @@ namespace API.Controllers
         Token = await _tokenService.GenerateToken(user),
         Basket = userBasket?.MapBasketToDto()
       };
+    }
+
+    [Authorize]
+    [HttpGet("savedAddress")]
+    public async Task<ActionResult<UserAddress>> GetSavedAddress()
+    {
+      return await _userManager.Users
+      .Where(u => u.UserName == User.Identity.Name)
+      .Select(u => u.Address)
+      .FirstOrDefaultAsync();
     }
   }
 
