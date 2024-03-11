@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -22,7 +22,7 @@ import { validationSchema } from './validationSchema';
 
 import { useAppDispatch } from '../../Redux/Hooks';
 import { clearBasket, removeLoading, setLoading } from '../../Redux/Slices';
-import { orderServices } from '../../Services';
+import { authServices, orderServices } from '../../Services';
 
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
 
@@ -83,6 +83,13 @@ export const CheckoutPage = () => {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  useEffect(() => {
+    authServices.getAddress().then((r) => {
+      if (r) methods.reset({ ...methods.getValues, ...r, saveAddress: false });
+    });
+  }, [methods]);
+
   return (
     <FormProvider {...methods}>
       <PageTitle title='Checkout' />

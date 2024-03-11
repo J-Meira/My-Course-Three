@@ -1,16 +1,16 @@
 import { useController } from 'react-hook-form';
 import { ITextInputProps } from '../../@Types';
-import { Grid, GridProps, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 
 export const TextInput = (props: ITextInputProps) => {
   const { fieldState, field } = useController({ ...props, defaultValue: '' });
   const { multiline, rows, type, grid, noGrid } = props;
 
-  const getGrid = (g?: GridProps) => {
+  const getGrid = () => {
     return {
       xs: 12,
       sm: 6,
-      ...g,
+      ...grid,
     };
   };
 
@@ -31,7 +31,7 @@ export const TextInput = (props: ITextInputProps) => {
   return noGrid ? (
     render
   ) : (
-    <Grid item {...getGrid(grid)}>
+    <Grid item {...getGrid()}>
       {render}
     </Grid>
   );

@@ -16,14 +16,12 @@ export const PaymentForm = () => {
         Payment method
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <TextInput
-            name='nameOnCard'
-            label='Name on card'
-            autoComplete='cc-name'
-            control={control}
-          />
-        </Grid>
+        <TextInput
+          name='nameOnCard'
+          label='Name on card'
+          autoComplete='cc-name'
+          control={control}
+        />
         <Grid item xs={12} md={6}>
           <TextField
             id='cardNumber'
