@@ -30,5 +30,25 @@ namespace API.Services
       return await _context.SaveChangesAsync() > 0;
     }
 
+    public int GetDefaultDeliveryFee(IConfiguration config)
+    {
+      return int
+        .Parse(config
+          .GetSection("OrderSettings:DefaultDeliveryFee")
+            .Value ?? "100");
+    }
+    public int GetMinimumAmount(IConfiguration config)
+    {
+      return int
+        .Parse(config
+          .GetSection("OrderSettings:MinimumAmount")
+            .Value ?? "500");
+    }
+
+    public decimal GetDeliveryFee(decimal subTotal, IConfiguration config)
+    {
+      return subTotal > GetMinimumAmount(config) ? 0 : GetDefaultDeliveryFee(config);
+    }
+
   }
 }

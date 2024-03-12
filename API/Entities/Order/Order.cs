@@ -13,6 +13,7 @@ namespace API.Entities.Order
     public decimal SubTotal { get; set; }
     public decimal DeliveryFee { get; set; }
     public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+    public string PaymentIntentId { get; set; }
 
     public decimal GetTotal()
     {

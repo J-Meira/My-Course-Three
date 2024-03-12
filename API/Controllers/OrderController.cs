@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Entities;
 using API.Entities.Order;
 using API.Extensions;
+using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace API.Controllers
   [Authorize]
   public class OrderController(
     StoreContext context,
-    IConfiguration config
+    IConfiguration config,
+    BasketService basketService
   ) : BaseApiController
   {
     private readonly StoreContext _context = context;
     private readonly IConfiguration _config = config;
+    private readonly BasketService _basketService = basketService;
 
     [HttpGet]
     public async Task<ActionResult<List<OrderRdto>>> GetAll()
@@ -66,17 +69,8 @@ namespace API.Controllers
         productItem.QuantityInStock -= item.Quantity;
       }
 
-      var defaultDeliveryFee = int
-        .Parse(_config
-          .GetSection("OrderSettings:DefaultDeliveryFee")
-            .Value ?? "100");
-      var MinimumAmount = int
-        .Parse(_config
-          .GetSection("OrderSettings:MinimumAmount")
-            .Value ?? "500");
-
       var subTotal = items.Sum(item => item.Price * item.Quantity);
-      var deliveryFee = subTotal > MinimumAmount ? 0 : defaultDeliveryFee;
+      var deliveryFee = _basketService.GetDeliveryFee(subTotal, _config);
 
       var order = new Order
       {
@@ -85,6 +79,7 @@ namespace API.Controllers
         ShippingAddress = orderDto.ShippingAddress,
         SubTotal = subTotal,
         DeliveryFee = deliveryFee,
+        PaymentIntentId = basket.PaymentIntentId
       };
 
       _context.Orders.Add(order);

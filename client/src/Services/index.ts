@@ -75,4 +75,5 @@ export * from './AuthServices';
 export * from './BasketServices';
 export * from './BuggyServices';
 export * from './OrderServices';
+export * from './PaymentServices';
 export * from './ProductServices';

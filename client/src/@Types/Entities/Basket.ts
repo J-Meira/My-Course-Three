@@ -2,6 +2,8 @@ export interface IBasket {
   id: number;
   buyerId: string;
   items: IBasketItem[];
+  paymentIntentId: string | null;
+  clientSecret: string | null;
 }
 
 export interface IBasketItem {

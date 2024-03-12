@@ -72,6 +72,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<BasketService>();
+builder.Services.AddScoped<PaymentService>();
 
 var app = builder.Build();
 

@@ -12,6 +12,8 @@ namespace API.Extensions
       return new BasketRdto(
         basket.Id,
         basket.BuyerId,
+        basket.PaymentIntentId,
+        basket.ClientSecret,
         basket.Items.Select(item =>
           new BasketItemRdto(
             item.ProductId,
