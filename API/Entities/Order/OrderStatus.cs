@@ -4,6 +4,6 @@ namespace API.Entities.Order
   {
     Pending,
     PaymentReceived,
-    PaymentFailed,
+    Complete,
   }
 }

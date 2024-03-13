@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mui/material';
 import { IOrder } from '../../@Types';
-import { currencyFormat } from '../../Utils';
+import { currencyFormat, orderStatus } from '../../Utils';
 import { PageTitle } from '../../Components';
 
 export interface IOrdersListProps {
@@ -25,10 +25,12 @@ export const OrdersList = ({ orders, selectOrder }: IOrdersListProps) => {
         <Table sx={{ minWidth: 650 }} aria-label='simple table'>
           <TableHead>
             <TableRow>
-              <TableCell>Order Number</TableCell>
+              <TableCell>#</TableCell>
+              <TableCell align='center'>Date</TableCell>
+              <TableCell align='right'>SubTotal</TableCell>
+              <TableCell align='right'>Delivery Fee</TableCell>
               <TableCell align='right'>Total</TableCell>
-              <TableCell align='right'>Order Date</TableCell>
-              <TableCell align='right'>Order Status</TableCell>
+              <TableCell align='center'>Status</TableCell>
               <TableCell align='right'></TableCell>
             </TableRow>
           </TableHead>
@@ -41,13 +43,21 @@ export const OrdersList = ({ orders, selectOrder }: IOrdersListProps) => {
                 <TableCell component='th' scope='row'>
                   {order.id}
                 </TableCell>
+                <TableCell align='center'>
+                  {order.orderDate.split('T')[0]}
+                </TableCell>
+                <TableCell align='right'>
+                  $ {currencyFormat(order.subtotal)}
+                </TableCell>
+                <TableCell align='right'>
+                  $ {currencyFormat(order.deliveryFee)}
+                </TableCell>
                 <TableCell align='right'>
                   $ {currencyFormat(order.total)}
                 </TableCell>
-                <TableCell align='right'>
-                  {order.orderDate.split('T')[0]}
+                <TableCell align='center'>
+                  {orderStatus[order.orderStatus]}
                 </TableCell>
-                <TableCell align='right'>{order.orderStatus}</TableCell>
                 <TableCell align='right'>
                   <Button onClick={() => selectOrder(order.id)}>View</Button>
                 </TableCell>
