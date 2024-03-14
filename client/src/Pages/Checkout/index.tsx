@@ -8,9 +8,7 @@ import { useAppDispatch } from '../../Redux/Hooks';
 import { removeLoading, setBasket, setLoading } from '../../Redux/Slices';
 import { paymentServices } from '../../Services';
 
-const stripePromise = loadStripe(
-  'pk_test_51OtF2AEwqcTVeFHn3XbPe9jmF4Fqv1d7n8I1xSV8v3Ia1dzEhrYBJvypc5JUQn3L5PtSvLsRGYWcuZptsWoMYWAJ00LXNs2QTX',
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_P_KEY);
 
 export const CheckoutPage = () => {
   const dispatch = useAppDispatch();

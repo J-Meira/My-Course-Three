@@ -48,6 +48,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
 {
   opt.User.RequireUniqueEmail = true;
@@ -69,7 +70,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       };
     });
 builder.Services.AddAuthorization();
-builder.Services.AddCors();
+
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<BasketService>();
 builder.Services.AddScoped<PaymentService>();
@@ -88,10 +89,9 @@ if (app.Environment.IsDevelopment())
     }
   );
 }
-else
-{
-  app.UseHttpsRedirection();
-}
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseCors(opt =>
 {
@@ -106,6 +106,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToController("Index", "Fallback");
 
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
