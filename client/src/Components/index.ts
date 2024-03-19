@@ -6,5 +6,6 @@ export * from './LoadingIconButton';
 export * from './PageTitle';
 export * from './Pagination';
 export * from './ProductCard';
+export * from './ProductForm';
 export * from './ProductSearch';
 export * from './SnackContainer';

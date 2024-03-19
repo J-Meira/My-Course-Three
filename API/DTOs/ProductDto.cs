@@ -11,7 +11,6 @@ namespace API.DTOs
     [Required]
     [Range(1, Double.PositiveInfinity)]
     public decimal Price { get; set; }
-    [Required]
     public IFormFile File { get; set; }
     [Required]
     public string Type { get; set; }

@@ -20,7 +20,7 @@ export interface IOrderDetailsProps {
 export const OrderDetails = ({ order, clearOrder }: IOrderDetailsProps) => {
   return (
     <>
-      <PageTitle title='Order details' backAction={clearOrder} />
+      <PageTitle title='Order details' action={clearOrder} />
       <TableContainer component={Paper} square>
         <Table>
           <TableHead>

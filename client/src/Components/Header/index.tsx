@@ -114,6 +114,20 @@ export const Header = () => {
                 {item.label}
               </Button>
             ))}
+            {user && user.roles?.includes('Admin') && (
+              <Button
+                sx={{
+                  color: '#fff',
+                  backgroundColor: isActive('/admin')
+                    ? 'rgba(0,0,0,0.2)'
+                    : undefined,
+                }}
+                component={Link}
+                to={'/admin'}
+              >
+                Admin
+              </Button>
+            )}
           </Box>
           <Box display='flex'>
             <IconButton
@@ -212,6 +226,13 @@ export const Header = () => {
                 </ListItemButton>
               </ListItem>
             ))}
+            {user && user.roles?.includes('Admin') && (
+              <ListItem disablePadding>
+                <ListItemButton component={Link} to='/admin'>
+                  <ListItemText color='inherit' primary='ADMIN' />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
           <Divider />
           <List>

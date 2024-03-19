@@ -24,11 +24,14 @@ export const getAllProducts = createAsyncThunk<
   { state: RootState }
 >('products/getAllProducts', async (_, thunkAPI) => {
   try {
+    thunkAPI.dispatch(setLoading('pendingProducts'));
     const params = thunkAPI.getState().products.productParams;
     const response = await productServices.getAll(params);
     thunkAPI.dispatch(setMetaData(response.metaData));
+    thunkAPI.dispatch(removeLoading('pendingProducts'));
     return response.items;
   } catch (error) {
+    thunkAPI.dispatch(removeLoading('pendingProducts'));
     return thunkAPI.rejectWithValue({ error });
   }
 });
@@ -97,6 +100,9 @@ export const productsSlice = createSlice({
     setMetaData: (state, action) => {
       state.metaData = action.payload;
     },
+    resetProducts: (state) => {
+      state.productsLoaded = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAllProducts.fulfilled, (state, action) => {
@@ -119,6 +125,7 @@ export const {
   setPageNumber,
   resetProductParams,
   setMetaData,
+  resetProducts,
 } = productsSlice.actions;
 
 export const productSelectors = productsAdapter.getSelectors(

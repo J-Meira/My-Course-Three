@@ -55,6 +55,16 @@ export const getUser = createAsyncThunk<IUser>(
   },
 );
 
+const getRoles = (user: IUser): IUser => {
+  const claims = JSON.parse(atob(user.token.split('.')[1]));
+  const roles =
+    claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+  return {
+    ...user,
+    roles: typeof roles === 'string' ? [roles] : roles,
+  };
+};
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -65,7 +75,7 @@ export const authSlice = createSlice({
       router.navigate('/');
     },
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = getRoles(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -78,7 +88,7 @@ export const authSlice = createSlice({
     builder.addMatcher(
       isAnyOf(signIn.fulfilled, getUser.fulfilled),
       (state, action) => {
-        state.user = action.payload;
+        state.user = getRoles(action.payload);
       },
     );
     builder.addMatcher(isAnyOf(signIn.rejected), (_, action) => {

@@ -15,8 +15,23 @@ const getById = (id: number): Promise<IProduct | null> =>
 
 const getFilters = () => api.get('product/filters');
 
+const create = (data: FormData) =>
+  api.post('product', data, {
+    headers: { 'Content-type': 'multipart/form-data' },
+  });
+
+const updateById = (id: number, data: FormData) =>
+  api.put(`product/${id}`, data, {
+    headers: { 'Content-type': 'multipart/form-data' },
+  });
+
+const deleteById = (id: number) => api.delete(`product/${id}`);
+
 export const productServices = {
   getAll,
   getById,
   getFilters,
+  create,
+  updateById,
+  deleteById,
 };

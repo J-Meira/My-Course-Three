@@ -17,7 +17,7 @@ import {
 
 import { IOptionList } from '../../@Types';
 import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
-import { getFilters, setProductParams } from '../../Redux/Slices';
+import { setProductParams } from '../../Redux/Slices';
 
 const sortByOptions: IOptionList[] = [
   { value: 'name', label: 'Alphabetical' },
@@ -28,14 +28,10 @@ const sortByOptions: IOptionList[] = [
 export const Filters = () => {
   const dispatch = useAppDispatch();
   const matches = useMediaQuery('(max-width:599px)');
-  const { filtersLoaded, brands, types, productParams } = useAppSelector(
+  const { brands, types, productParams } = useAppSelector(
     (state) => state.products,
   );
   const [isOpen, setIsOpen] = useState(true);
-
-  useEffect(() => {
-    if (!filtersLoaded) dispatch(getFilters());
-  }, [filtersLoaded, dispatch]);
 
   useEffect(() => {
     setIsOpen(!matches);

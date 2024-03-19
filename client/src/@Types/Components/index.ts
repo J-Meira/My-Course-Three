@@ -9,3 +9,6 @@ export * from './RadioButtonGroup';
 export * from './SnackProvider';
 export * from './TextInput';
 export * from './CheckInput';
+export * from './SelectInput';
+export * from './DropZoneInput';
+export * from './ProductForm';

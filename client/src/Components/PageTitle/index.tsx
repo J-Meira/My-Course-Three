@@ -1,20 +1,20 @@
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { IPageTitleProps } from '../../@Types';
 
-export const PageTitle = ({ title, subTitle, backAction }: IPageTitleProps) => (
+export const PageTitle = ({
+  title,
+  subTitle,
+  action,
+  actionLabel,
+}: IPageTitleProps) => (
   <>
     <Box display='flex' justifyContent='space-between'>
       <Typography variant='h2' sx={{ fontSize: '2.5rem', fontWeight: 600 }}>
         {title}
       </Typography>
-      {backAction && (
-        <Button
-          onClick={backAction}
-          sx={{ m: 2 }}
-          size='large'
-          variant='contained'
-        >
-          Back to orders
+      {action && (
+        <Button onClick={action} sx={{ m: 2 }} size='large' variant='contained'>
+          {actionLabel || 'Back to orders'}
         </Button>
       )}
     </Box>

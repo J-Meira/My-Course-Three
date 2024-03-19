@@ -4,12 +4,13 @@ import { Pagination } from '../../Components';
 import { List } from './List';
 import { Filters } from './Filters';
 
-import { useAppDispatch, useAppSelector } from '../../Redux/Hooks';
+import { useAppDispatch } from '../../Redux/Hooks';
 import { setPageNumber } from '../../Redux/Slices';
+import { useProducts } from '../../Utils';
 
 export const HomePage = () => {
   const dispatch = useAppDispatch();
-  const { metaData } = useAppSelector((state) => state.products);
+  const { metaData } = useProducts();
 
   return (
     <Grid container spacing={2}>

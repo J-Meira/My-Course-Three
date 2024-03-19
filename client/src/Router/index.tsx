@@ -4,6 +4,7 @@ import { App } from '../App';
 
 import {
   AboutPage,
+  AdminPage,
   BasketPage,
   BuggyPage,
   CheckoutPage,
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
           { path: '/checkout', element: <CheckoutPage /> },
           { path: '/my-orders', element: <OrdersPage /> },
         ],
+      },
+      {
+        element: <RequireAuth roles={['Admin']} />,
+        children: [{ path: '/admin', element: <AdminPage /> }],
       },
       { path: '/', element: <HomePage /> },
       { path: '/product/:id', element: <ProductPage /> },
